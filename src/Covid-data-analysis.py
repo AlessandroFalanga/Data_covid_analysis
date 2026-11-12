@@ -20,7 +20,7 @@ data = f1[cols]
 data["date"] = pd.to_datetime(data["date"])
 italy = data[data["location"] == "Italy"]
 
-print("\nStatistiche Italia:")
+print("\nItaly Statistics:")
 print(italy.describe())
 
 # Graphs
