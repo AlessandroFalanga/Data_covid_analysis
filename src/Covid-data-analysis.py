@@ -1,42 +1,41 @@
+# Import libraries
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from pathlib import Path
 
+# I/O paths
 BASE_DIR = Path(__file__).resolve().parent.parent
-# __file__ individua il file python in esecuzione, il primo parent risale alla cartella src, il secondo alla cartella principale
 file = BASE_DIR / "data" / "covid_sample.csv"
 
 output_dir = BASE_DIR / "outputs"
 output_dir.mkdir(exist_ok=True)
 
-f1 = pd.read_csv(file) #Legge i file con Pandas
+# Read file and filter to Italy
+f1 = pd.read_csv(file)
 
-print(f1.head()) #mostra le prime 5 righe del file
-
-cols = ["location", "date", "total_cases", "new_cases", "population"] #prende come riferimento alcune colonne utili
+cols = ["location", "date", "total_cases", "new_cases", "population"]
 data = f1[cols]
 
-data["date"] = pd.to_datetime(data["date"]) #converte la colonna date in formato data
-
-italy = data[data["location"] == "Italy"] #fitra solo il paese italia
+data["date"] = pd.to_datetime(data["date"])
+italy = data[data["location"] == "Italy"]
 
 print("\nStatistiche Italia:")
-print(italy.describe()) #descrive i dati per la colonna filtrata
+print(italy.describe())
 
-# Grafico: nuovi casi nel tempo
-plt.figure(figsize=(10,5)) #crea una nuova finestra per il grafico, specifica le dimensioni con una tupla (10, 5)
-sns.lineplot(data=italy, x="date", y="new_cases") #crea il tipo di grafico
-plt.title("titolo grafico") #crea titolo grafico
-plt.xlabel("Dati")
-plt.ylabel("casi giornalieri")
+# Graphs
+plt.figure(figsize=(10,5))
+sns.lineplot(data=italy, x="date", y="new_cases")
+plt.title("Trend of cases in Italy")
+plt.xlabel("Data")
+plt.ylabel("Daily Cases")
 
-
+# Output png
 plt.savefig(
     output_dir / "Covid_trend_italy.png",
     dpi = 300,
     bbox_inches = "tight"
 )
 
-# plt.show()
+plt.show()
 
